@@ -1,29 +1,30 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
-bool isSorted(int arr[], size_t size) {
-    if (size == 0) {
-        return true;
-    }
-
-    for (size_t i = 1; i < size; i++) {
-        if (arr[i] < arr[i - 1]) {
-            return false;
-        }
+bool is_sorted(int arr[], int size, bool ascending) {
+    for (int i = 0; i < size - 1; i++) {
+        if (ascending ? arr[i] > arr[i+1] : arr[i] < arr[i+1]) return false;
     }
     return true;
 }
 
 int main() {
+    int size;
+    printf("Розмір вектора: ");
+    if (scanf("%d", &size) != 1 || size <= 0) return 1;
 
-    int arr[] = {1, 2, 3, 4, 5};
-    size_t size = sizeof(arr) / sizeof(arr[0]);
+    int *arr = malloc(size * sizeof(int));
+    if (!arr) return 1;
 
-    if (isSorted(arr, size)) {
-        printf("Масив впорядкований.\n");
-    } else {
-        printf("Масив не впорядкований.\n");
-    }
+    printf("Елементи (%d): ", size);
+    for (int i = 0; i < size; i++) 
+        if (scanf("%d", &arr[i]) != 1) { free(arr); return 1; }
 
+    if (is_sorted(arr, size, true)) printf("За зростанням\n");
+    else if (is_sorted(arr, size, false)) printf("За спаданняm\n");
+    else printf("Не упорядкований\n");
+
+    free(arr);
     return 0;
 }
